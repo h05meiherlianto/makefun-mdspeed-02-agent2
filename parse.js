@@ -975,7 +975,8 @@ class Tokenizer {
           if (interrupts) break;
           const firstNonSpace =
             leadEnd === line.length ? -1 : hasTab ? expandedLead.length : leadEnd;
-          if (firstNonSpace >= indent || !line.trim()) {
+          const isBlank = !line.trim();
+          if (firstNonSpace >= indent || isBlank) {
             content += '\n' + expanded.slice(indent);
           } else {
             if (
@@ -992,7 +993,7 @@ class Tokenizer {
               /^ {0,3}(?:=+|-+) *$/.test(line) && BLOCK.lheading.test(`${marker}\n${line}`);
             content += '\n' + (setextLike ? `    ${expanded.replace(/^ {0,3}/, '')}` : line);
           }
-          firstEmpty = !line.trim();
+          firstEmpty = isBlank;
           src = nl === -1 ? '' : src.substring(nl + 1);
           marker = expanded.slice(indent);
         }
